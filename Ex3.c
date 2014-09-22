@@ -12,20 +12,23 @@ int nbAlea, nbEssais=0;
 int codeRetour=0, cr;
 
 do{
-srand(time(null));
+srand(time(NULL));
 idproc=fork();
-if(idproc==-1)printf(stderr,"Erreur création processus fils.");
+if(idproc==-1)fprintf(stderr,"Erreur création processus fils.");
 if(idproc==0)
 {
 nbAlea=rand()%100+1;
 execlp("exo3","nbAlea",NULL);
-printf(stderr,"Erreur d'exec");
+fprintf(stderr,"Erreur d'exec");
 exit(0);
 }
 codeRetour=wait(&cr);
-NbEssais++;
+nbEssais++;
 if(WIFEXITED(cr)){
+    printf("Execution normale avec code retour %d\n", WEXITSTATUS(cr));
 }
+else printf("Pb par signal: %d\n", WTERMSIG(cr));
 }while(nbEssais<NBMAXESSAIS || codeRetour!=0);
+
 
 }
